@@ -22,13 +22,22 @@ formLogin.addEventListener('submit', (event) => {
 	fetch(
 		'https://api.which-one-battle.julienpoirier-webdev.com/api/auth/signin',
 		options
-	).then((response) => {
-		response.json().then((data) => {
-			localStorage.setItem('token', data.token);
-			userDiv.innerHTML = `<p>Bonjour ${data.user.name} !!</p>`;
-			formLogin.classList.add('hidden');
+	)
+		.then((response) => {
+			if (response.ok) {
+				response.json().then((data) => {
+					localStorage.setItem('token', data.token); // Le local storage est une zone de stockage dans le navigateur.
+					//C'est une API intégrée a JS (comme le DOM)
+					userDiv.innerHTML = `<p>Bonjour ${data.user.name} !!</p>`;
+					formLogin.classList.add('hidden');
+				});
+			} else {
+				alert('Il y a une erreur avec votre login / mdp');
+			}
+		})
+		.catch((error) => {
+			console.log(error);
 		});
-	});
 });
 
 const headers = localStorage.getItem('token')
@@ -44,16 +53,35 @@ fetch('https://api.which-one-battle.julienpoirier-webdev.com/api/battles', {
 				.json()
 				.then(function (data) {
 					data.forEach(function (battle) {
-						let propositions = '';
-						battle.propositions.forEach(function (proposition) {
-							propositions += `<p><span>${proposition.name}</span><span>${proposition.value}</span></p>`;
-						});
+						const oneBattleDiv = document.createElement('div');
+						oneBattleDiv.classList.add('battle');
 
-						divBattles.innerHTML += `<div class="battle">
-                                      <p>${battle.question}</p>
-                                      <p>${battle.texte}</p>
-                                      <div>${propositions}</div>
-                                  </div>`;
+						const question = document.createElement('p');
+						question.innerText = battle.question;
+						const texte = document.createElement('p');
+						texte.innerText = battle.texte;
+
+						oneBattleDiv.appendChild(question);
+						oneBattleDiv.appendChild(texte);
+
+						let propositions = document.createElement('div');
+						battle.propositions.forEach(function (proposition) {
+							const div = document.createElement('div');
+							div.innerHTML = `<span>${proposition.name}</span><span>${proposition.value}</span>`;
+							const button = document.createElement('button');
+							button.innerText = `Voter pour ${proposition.name}`;
+							button.addEventListener('click', () => {
+								// faire une requête AJAX qui envoi vers
+								// https://api.which-one-battle.julienpoirier-webdev.com/api/battles/:idBattle/vote
+								// ajouter des options avec le token JWT
+								console.log(`je vote pour ${proposition.name}`);
+							});
+							div.appendChild(button);
+							propositions.appendChild(div);
+						});
+						oneBattleDiv.appendChild(propositions);
+
+						divBattles.appendChild(oneBattleDiv);
 					});
 				})
 				.catch(function (error) {
