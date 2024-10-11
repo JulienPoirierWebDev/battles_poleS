@@ -34,6 +34,7 @@ formLogin.addEventListener('submit', (event) => {
 					//C'est une API intégrée a JS (comme le DOM)
 					userDiv.innerHTML = `<p>Bonjour ${data.user.name} !!</p>`;
 					formLogin.classList.add('hidden');
+					formRegister.classList.add('hidden');
 				});
 			} else {
 				alert('Il y a une erreur avec votre login / mdp');
@@ -103,6 +104,7 @@ const localToken = localStorage.getItem('token');
 
 if (localToken) {
 	formLogin.classList.toggle('hidden');
+	formRegister.classList.toggle('hidden');
 }
 
 formRegister.addEventListener('submit', (event) => {
@@ -130,6 +132,7 @@ formRegister.addEventListener('submit', (event) => {
 					localStorage.setItem('token', data.token);
 					userDiv.innerHTML = `<p>Bonjour ${data.user.name} !!</p>`;
 					formRegister.classList.add('hidden');
+					formLogin.classList.add('hidden');
 				});
 			} else {
 				alert('Il y a une erreur avec votre inscription');
