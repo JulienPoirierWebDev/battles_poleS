@@ -8,6 +8,7 @@
 	</head>
 	<body>
 		<div id="app">
+			<h2>Connexion</h2>
 			<form id="formLogin">
 				<label for="email">Saisir votre email:</label>
 
@@ -21,6 +22,26 @@
 				<label for="password">Saisir MDP</label>
 				<input type="password" name="password" id="password" />
 				<input type="submit" value="Connexion" />
+			</form>
+			<h2>Inscrption</h2>
+			<form action="" id="formRegister">
+				<label for="email">Saisir votre email:</label>
+				<input
+					type="text"
+					name="email"
+					id="email-register"
+					placeholder="Email"
+				/>
+				<label for="password">Saisir MDP</label>
+				<input type="password" name="password" id="password-register" />
+				<label for="name">Saisir votre nom:</label>
+				<input
+					type="text"
+					name="name"
+					id="name-register"
+					placeholder="Nom"
+				/>
+				<input type="submit" value="Inscription" />
 			</form>
 
 			<div id="user"></div>
